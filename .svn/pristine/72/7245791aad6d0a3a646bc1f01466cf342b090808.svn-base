@@ -1,0 +1,78 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public enum Menus{
+	MainMenu,
+	Credits
+}
+
+public class MainMenu : MonoBehaviour {
+	
+	private float currentVolume = 1;
+	public Menus CurrentMenu = Menus.MainMenu;
+
+	public Texture buttonPlay;
+	public Texture buttonOptions;
+	public Texture buttonCredits;
+	public Texture buttonExit;
+	public Texture buttonBack;
+	public Texture bgtexture;
+	public Texture creditTexture;
+
+
+	public GUITexture background;
+
+	private Texture currentTexture;
+	
+	// Use this for initialization
+	void Start () {
+		currentTexture = bgtexture; 
+		background.texture = currentTexture;
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		background.texture = currentTexture;
+	}
+	
+	void OnGUI(){
+		GUI.backgroundColor = new Color(0,0,0,0);
+		gameMenus();	
+	}
+	
+	void gameMenus(){
+		switch(CurrentMenu){
+		case Menus.MainMenu:
+			GUILayout.BeginArea(new Rect((Screen.width/2) - (buttonPlay.width/2),
+			                             (Screen.height/2) - (2*buttonPlay.height),
+			                             buttonPlay.width,
+			                             (4*buttonPlay.height)));
+			if(GUILayout.Button(buttonPlay)){
+				Application.LoadLevel("level1");	
+			}
+			if(GUILayout.Button(buttonCredits)){
+				CurrentMenu = Menus.Credits;	
+			}
+			GUILayout.Space(13);
+			if(GUILayout.Button(buttonExit)){
+				Application.Quit();	
+			}
+			GUILayout.EndArea();
+			break;
+		case Menus.Credits:
+			currentTexture = creditTexture;
+			GUILayout.BeginArea(new Rect((Screen.width/2) - (buttonPlay.width/2),
+			                             (Screen.height/2) - (2*buttonPlay.height),
+			                             buttonPlay.width,
+			                             (4*buttonPlay.height)));
+			GUILayout.Space(13);
+			if(GUILayout.Button(buttonBack)){
+				currentTexture = bgtexture;
+				CurrentMenu = Menus.MainMenu;	
+			}
+			GUILayout.EndArea();
+			break;
+		}
+	}
+}
+
